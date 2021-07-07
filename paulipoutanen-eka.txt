@@ -1,0 +1,57 @@
+0.4 UUSI MUISTIINPANO  - TAPAHTUMAT
+
+Avataan: https://studies.cs.helsinki.fi/exampleapp/notes
+
+SELAIN  - ->  PALVELIN HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes 
+
+PALVELIN -- > SELAIN sivun exampleapp/notes HTML-koodi.
+
+SELAIN suorittaa PALVELIMENLTA vastaanottaman sivun exampleapp/notes HEAD osiossa määritellyn main.js - koodin. 
+Tämä käsky aiheutaa seuraavan liikenteen. 
+
+SELAIN --> PALVELIN GET main.js // scripti
+PALVELIN --> SELAIN main.js
+
+SELAIN --> PALVELIN GET main.css // tyylitiedosto
+PALVELIN -- > SELAIN main.css
+
+Selain suorittaa main.js ja pyytää datan json - muotoisena selaimeen, joka renderöi datan raaka-jsonia luettavampaan muotoon
+PALVELIN --> SELAIN GET data.json // varsinainen data
+Selain tulostaa data.json tiedot selaimeen, css-määritteyissä asettuihin raameihin. 
+
+Lisätään uusi note lomakkeelle sivulla /exampleapp/notes  
+<form action='/exampleapp/new_note' method='POST'>
+
+--> HTTP POST -> new_note
+PALVELIN REAGOI PYYNTÖÖN - >  STATUS CODE 302 (uudelleenohjaus) 
+-> HTTP GET location: /exampleapp/notes
+-> HTTP GET main.js + main.css + data.json
+
+Palvelin luo uutta muistiinpanoa new_note vastaavan olion ja sijoittaa sen taulukkoon notes
+
+PALVELIN -> SELAIN notes - // Tulostuu aiemmat notet + new note.
+
+
+0.5 SPA UUSI MUISTIINPANO - TAPAHTUMAT
+
+
+SELAIN --> PALVELIN POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+Pyyntö määrittelee, että data on JSON-muodossa - -> content-type: application/json
+
+PALVELIN --> SELAIN Status Code 201. Ei uudelleenohjausta, vaan selain pysyy samalla sivulla. 
+
+Spa.js -scriptissä on määritelty, että lomake-elementille on määrätty tapahtumankäsittelijä toteuttamaan lomakekentään kirjoitetun 
+
+ e.preventDefault() estää sivun uudelleen lataamisen lomakkeen lähettämisen yhteydessä.
+notes.push(note) lisää uuden json-muotoisen datan notesin.
+
+    notes.push(note)
+    e.target.elements[0].value = ""
+    redrawNotes()
+    sendToServer(note)
+  }
+
+
+
+
+  
